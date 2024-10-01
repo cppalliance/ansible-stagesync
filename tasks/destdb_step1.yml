@@ -3,9 +3,10 @@
   ansible.builtin.import_tasks: preflight.yml
 
 - name: Install prereqs
+  become: true
   ansible.builtin.import_tasks: prereqs.yml
 
-- name: Creates tmp directory
+- name: Create tmp directory on dest
   become: true
   ansible.builtin.file:
     path: "{{ stagesync_dest_tmp_dir }}"

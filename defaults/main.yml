@@ -20,8 +20,8 @@ stagesync_backups_upload_to_bucket: "no"
 stagesync_backups_s3_bucket: s3://examplebackups/db1/daily/
 stagesync_backups_s3_weekly_bucket: s3://examplebackups/db1/weekly/
 stagesync_backups_s3_cmd: "/usr/local/bin/aws s3"
-stagesync_backups_psql: "/usr/lib/postgresql/15/bin/psql"
-stagesync_backups_pgdump: "/usr/lib/postgresql/15/bin/pg_dump"
+stagesync_backups_psql: "/usr/lib/postgresql/16/bin/psql"
+stagesync_backups_pgdump: "/usr/lib/postgresql/16/bin/pg_dump"
 
 # Custom post-import updates
 stagesync_post_restore_update_db: false

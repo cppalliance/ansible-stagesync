@@ -51,7 +51,7 @@
   ansible.builtin.debug:
     var: stagesync_backupfilename
 
-- name: Creates tmp directory
+- name: Creates tmp directory on source
   become: true
   ansible.builtin.file:
     path: "{{ stagesync_source_tmp_dir }}"
