@@ -16,19 +16,22 @@
     msg:
       - "{{ stagesync_github_id }}"
 
-- name: Update database
-  become: true
-  become_user: "{{ stagesync_backup_user }}"
-  community.postgresql.postgresql_query:
-    db: "{{ stagesync_destdb }}"
-    query: update socialaccount_socialapp set client_id=%s, secret=%s where id = CAST (%s AS INTEGER);
-    positional_args:
-      - "{{ stagesync_social_client_id }}"
-      - "{{ stagesync_social_secret }}"
-      - "{{ stagesync_github_id }}"
-  register: command_output
+# Note 2025-03, if all sites were added in production, then post restore step is not needed.
+# Commenting out for now, as an extra precaution.
 
-- name: Output of social app update
-  ansible.builtin.debug:
-    msg:
-      - "{{ command_output }}"
+# - name: Update database
+#   become: true
+#   become_user: "{{ stagesync_backup_user }}"
+#   community.postgresql.postgresql_query:
+#     db: "{{ stagesync_destdb }}"
+#     query: update socialaccount_socialapp set client_id=%s, secret=%s where id = CAST (%s AS INTEGER);
+#     positional_args:
+#       - "{{ stagesync_social_client_id }}"
+#       - "{{ stagesync_social_secret }}"
+#       - "{{ stagesync_github_id }}"
+#   register: command_output
+#
+# - name: Output of social app update
+#   ansible.builtin.debug:
+#     msg:
+#       - "{{ command_output }}"
