@@ -2,6 +2,7 @@
 
 set -e
 
+PGDUMP_OPTIONS="--exclude-table-data=core_renderedcontent"
 AUTHMETHOD="peer"		# either "md5" or "peer"
 UPLOAD_TO_BUCKET="{{ stagesync_backups_upload_to_bucket }}"
 S3CMD="{{ stagesync_backups_s3_cmd }}"
@@ -91,20 +92,20 @@ do
         # connect to mysql using mysqldump for select mysql database
         # and pipe it out to gz file in backup dir :)
 	if [ "$AUTHMETHOD" == "md5" ]; then
-            PGPASSWORD=$PgPASS $PGDUMP -h localhost -U $PgUSER -p $PgPORT "$db" | $GZIP -9 > "$SQLFILE"
+            PGPASSWORD=$PgPASS $PGDUMP ${PGDUMP_OPTIONS} -h localhost -U $PgUSER -p $PgPORT "$db" | $GZIP -9 > "$SQLFILE"
             if [ "$UPLOAD_TO_BUCKET" == "yes" ]; then
                 $S3CMD cp "$SQLFILE" "$S3BUCKET"
             fi
-            PGPASSWORD=$PgPASS $PGDUMP -Fc -h localhost -U $PgUSER -p $PgPORT "$db" > "$DUMPFILE"
+            PGPASSWORD=$PgPASS $PGDUMP ${PGDUMP_OPTIONS} -Fc -h localhost -U $PgUSER -p $PgPORT "$db" > "$DUMPFILE"
             if [ "$UPLOAD_TO_BUCKET" == "yes" ]; then
                 $S3CMD cp "$DUMPFILE" "$S3BUCKET"
             fi
 	elif [ "$AUTHMETHOD" == "peer" ]; then
-            $PGDUMP -c "$db" | $GZIP -9 > "$SQLFILE"
+            $PGDUMP ${PGDUMP_OPTIONS} -c "$db" | $GZIP -9 > "$SQLFILE"
             if [ "$UPLOAD_TO_BUCKET" == "yes" ]; then
                 $S3CMD cp "$SQLFILE" "$S3BUCKET"
             fi
-            $PGDUMP -c -Fc "$db" > "$DUMPFILE"
+            $PGDUMP ${PGDUMP_OPTIONS} -c -Fc "$db" > "$DUMPFILE"
             if [ "$UPLOAD_TO_BUCKET" == "yes" ]; then
                 $S3CMD cp "$DUMPFILE" "$S3BUCKET"
             fi
