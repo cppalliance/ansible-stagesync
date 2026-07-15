@@ -9,6 +9,14 @@
   ansible.builtin.set_fact:
     stagesync_rclone_config: "{{ ansible_env.HOME }}/.config/rclone/rclone-ansible.conf"
 
+- name: Ensure rclone config directory exists
+  ansible.builtin.file:
+    path: "{{ stagesync_rclone_config | dirname }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
 - name: Generate rclone config file
   ansible.builtin.template:
     src: rclone-ansible.conf.j2
