@@ -3,7 +3,7 @@
   become: true
   become_user: "{{ stagesync_backup_user }}"
   community.postgresql.postgresql_query:
-    db: "{{ stagesync_destdb }}"
+    login_db: "{{ stagesync_destdb }}"
     query: select id from socialaccount_socialapp where provider='github' limit 1
   register: command_output
 
@@ -23,7 +23,7 @@
 #   become: true
 #   become_user: "{{ stagesync_backup_user }}"
 #   community.postgresql.postgresql_query:
-#     db: "{{ stagesync_destdb }}"
+#     login_db: "{{ stagesync_destdb }}"
 #     query: update socialaccount_socialapp set client_id=%s, secret=%s where id = CAST (%s AS INTEGER);
 #     positional_args:
 #       - "{{ stagesync_social_client_id }}"
